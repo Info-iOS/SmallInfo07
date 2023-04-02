@@ -11,9 +11,9 @@ import Then
 
 class ViewController: UIViewController {
     
-    var number1 = 0
-    var number2 = 0
-    var result = 0
+    var num1: Double = 0
+    var num2: Double = 0
+    var operation: String = ""
     
     var numberLabel = UILabel().then {
         $0.text =  "0"
@@ -163,7 +163,7 @@ class ViewController: UIViewController {
         $0.backgroundColor = .darkGray
         $0.layer.cornerRadius = 40.0
     }
-    
+
     var equal = UIButton().then {
         $0.setTitle("=", for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)

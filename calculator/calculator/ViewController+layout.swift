@@ -162,85 +162,136 @@ extension ViewController {
     
     
     @objc func resetButtonDidTap() {
-        print("0")
+        num1 = 0
+        num2 = 0
+        operation = ""
+        numberLabel.text = "0"
+    }
+    
+    func performOperation() -> Double? {
+        switch operation {
+        case "+":
+            return num1 + num2
+        case "-":
+            return num1 - num2
+        case "X":
+            return num1*num2
+        case "/":
+            if num2 == 0 {
+                return nil
+            }
+            return num1 / num2
+        default:
+            return nil
+            
+        }
     }
     
     @objc func plusMinusButtonDidTap() {
-        print("±")
+        if let text = numberLabel.text, let num = Double(text) {
+            numberLabel.text = String(-num)
+        }
     }
     
     @objc func percentButtonDidTap() {
-        print("%")
+        if let text = numberLabel.text, let num = Double(text) {
+              numberLabel.text = String(num / 100)
+        }
     }
     
     @objc func divideButtonDidTap() {
-        print("/")
+        if let text = numberLabel.text, let num = Double(text) {
+            num1 = num
+            operation = "/"
+            numberLabel.text = "/"
+        }
     }
     
     @objc func sevenButtonDidTap() {
-        print("7")
+        numberLabel.text?.append("7")
     }
     
     @objc func eightButtonDidTap() {
-        print("8")
+        numberLabel.text?.append("8")
     }
     
     @objc func nineButtonDidTap() {
-        print("9")
+        numberLabel.text?.append("9")
     }
     
     @objc func multiplyButtonDidTap() {
-        print("X")
+        if let text = numberLabel.text, let num = Double(text) {
+            num1 = num
+            operation = "X"
+            numberLabel.text = "X"
+        }
     }
     
     @objc func fourButtonDidTap() {
-        print("4")
+        numberLabel.text?.append("4")
     }
     
     @objc func fiveButtonDidTap() {
-        print("5")
+        numberLabel.text?.append("5")
     }
     
     @objc func sixButtonDidTap() {
-        print("6")
+        numberLabel.text?.append("6")
     }
     
     @objc func minusButtonDidTap() {
-        print("-")
-//        numberLabel.text = "-"
+        if let text = numberLabel.text, let num = Double(text) {
+            num1 = num
+            operation = "-"
+            numberLabel.text = "-"
+        }
     }
     
     @objc func oneButtonDidTap() {
-        print("1")
+        numberLabel.text?.append("1")
     }
     
     @objc func twoButtonDidTap() {
-        print("2")
+        numberLabel.text?.append("2")
     }
     
     @objc func threeButtonDidTap() {
-        print("3")
+        numberLabel.text?.append("3")
         
     }
 
     @objc func plusButtonDidTap() {
-        print("+")
+        if let text = numberLabel.text, let num = Double(text) {
+            num1 = num
+            operation = "+"
+            numberLabel.text = "+"
+        }
 //        numberLabel.text = "+"
     }
     
     @objc func zeroButtonDidTap() {
-        print("0")
-        numberLabel.text = "0"
+        numberLabel.text?.append("0")
     }
 
     @objc func dotButtonDidTap() {
-        print(".")
-        numberLabel.text = "."
+        if let text = numberLabel.text, !text.contains(".") {
+            numberLabel.text?.append(".")
+        }
     }
     
     @objc func equalButtonDidTap() {
-        print("=")
-        numberLabel.text = "="
+        if let text = numberLabel.text, let num = Double(text) {
+                   num2 = num
+            if let result = performOperation() {
+                numberLabel.text = String(result)
+            } else {
+                numberLabel.text = "Error"
+            }
+                num1 = 0
+                num2 = 0
+                operation = ""
+        }
+        
     }
 
 }
