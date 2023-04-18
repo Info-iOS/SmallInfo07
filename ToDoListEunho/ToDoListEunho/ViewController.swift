@@ -12,53 +12,51 @@ import SnapKit
 
 class ViewController: UIViewController {
     
-    var plusButton = UIButton().then {
-        $0.setTitle("+", for: .normal)
-        $0.setTitleColor(UIColor.blue ,for: .normal)
-        $0.backgroundColor = .white
-        $0.addTarget(self, action: #selector(plusButtonDidTap), for: .touchUpInside)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 30)
+    private lazy var toDoListTableView = UITableView().then {
+        $0.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
     }
-    
-    var doneButton = UIButton().then {
-        $0.setTitle("Done", for: .normal)
-        $0.setTitleColor(UIColor.blue, for: .normal)
-        $0.backgroundColor = .white
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 20)
-    }
-    
     
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        nav()
         
-        view.addSubview(plusButton)
-        view.addSubview(doneButton)
+       view.addSubview(toDoListTableView)
         
-        plusButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20.0)
-            $0.right.equalToSuperview().offset(0.0)
-            $0.width.height.equalTo(100)
-            
+        toDoListTableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
-        doneButton.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20.0)
-            $0.left.equalToSuperview().offset(0.0)
-            $0.width.height.equalTo(100)
-        }
- 
- 
-        
-        
-        
     }
+         
+   
+    
+    func nav() {
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
 
-    @objc func plusButtonDidTap() {
-        print("+")
+        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: nil)
+        navigationItem.leftBarButtonItem = leftBarButtonItem 
     }
-
 }
+    
+    func TableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        cell.textLabel?.text = "to do list 제목"
+        cell.detailTextLabel?.text = "to do list 내용"
+        cell.selectionStyle = .none
+        return cell
+        
+    }
+   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 5
+       
+  }
+
+
+     
+
 
 
