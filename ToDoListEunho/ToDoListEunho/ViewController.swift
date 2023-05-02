@@ -11,6 +11,7 @@ import Then
 import SnapKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var data: [String] = []
     
     private lazy var toDoListTableView = UITableView().then {
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
@@ -35,7 +36,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func nav() {
-        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: nil)
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self.data.count, action: data.count.append)
         navigationItem.rightBarButtonItem = rightBarButtonItem
         
         let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: nil)
@@ -47,13 +48,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.textLabel?.text = "to do list 제목"
         cell.detailTextLabel?.text = "to do list 내용"
         cell.selectionStyle = .none
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return data.count
         
     }
+
 }
 
      
