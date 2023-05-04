@@ -53,7 +53,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.text = "to do list 제목"
-        cell.detailTextLabel?.text =  data
+        cell.detailTextLabel?.text =  data[indexPath.row]
         cell.selectionStyle = .none
 
         return cell
@@ -77,9 +77,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if let toDoList = UserDefaults.standard.stringArray(forKey: "toDoList") {
             data = toDoList
+            count += 1
            // print("UserDefaults에 저장된 할 일 목록: \(toDoList)")
         } else {
             data = ["X"]
+            count += 1
            // print("UserDefaults에 저장된 할 일 목록이 없습니다.")
         }
         toDoListTableView.reloadData()
@@ -92,11 +94,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         alert.addAction(ok)
         present(alert,animated: true,completion: nil)
         
-        
-        
-        count += 1
-        print(count)
         toDoListTableView.reloadData()
+        
     
       
         
