@@ -12,7 +12,10 @@ import SnapKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var data: [String] = []
-    var count: Int = 5
+    var count: Int = 0
+    
+  
+    
     
     private lazy var toDoListTableView = UITableView().then {
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
@@ -50,15 +53,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.text = "to do list 제목"
-        cell.detailTextLabel?.text = "to do list 내용"
+        cell.detailTextLabel?.text = "할 일 내용"
         cell.selectionStyle = .none
 
         return cell
     }
     
-    @objc func addButton() {
+    @objc func addButton(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "To Do", message: "", preferredStyle: .alert)
+        let cancle = UIAlertAction(title: "취소", style: .default, handler: nil)
+        let ok = UIAlertAction(title: "확인", style: .destructive, handler: {
+            action in
+            let newContents: String = alert.textFields?[0].text ?? "에러 입니다"
+        })
+        alert.addTextField { (inputNewContents) in
+            inputNewContents.placeholder = "새로운 할 일 입력"
+            inputNewContents.textAlignment = .center
+        }
+        alert.addAction(cancle)
+        alert.addAction(ok)
+        present(alert,animated: true,completion: nil)
+        
+        
+        
         count += 1
         print(count)
+        toDoListTableView.reloadData()
+    
+      
         
     }
     
