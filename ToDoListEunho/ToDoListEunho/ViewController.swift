@@ -24,6 +24,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        toDoListTableView.reloadData()
+        
         view.backgroundColor = .white
         
         nav()
@@ -41,7 +43,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func nav() {
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
         navigationItem.rightBarButtonItem = rightBarButtonItem
-//
         let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButton))
         navigationItem.leftBarButtonItem = leftBarButtonItem
     }
