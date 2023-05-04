@@ -53,7 +53,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         cell.textLabel?.text = "to do list 제목"
-        cell.detailTextLabel?.text = "할 일 내용"
+        cell.detailTextLabel?.text =  data
         cell.selectionStyle = .none
 
         return cell
@@ -65,7 +65,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let ok = UIAlertAction(title: "확인", style: .destructive, handler: {
             action in
             let newContents: String = alert.textFields?[0].text ?? "에러 입니다"
+            if let toDoList = UserDefaults.standard.stringArray(forKey: "toDoList") {
+                var updatedToDoList = toDoList
+                updatedToDoList.append(newContents)
+                UserDefaults.standard.set(updatedToDoList, forKey: "toDoList")
+            } else {
+                UserDefaults.standard.set([newContents], forKey: "toDoList")
+            }
+            self.toDoListTableView.reloadData()
         })
+        
+        if let toDoList = UserDefaults.standard.stringArray(forKey: "toDoList") {
+            data = toDoList
+           // print("UserDefaults에 저장된 할 일 목록: \(toDoList)")
+        } else {
+            data = ["X"]
+           // print("UserDefaults에 저장된 할 일 목록이 없습니다.")
+        }
+        toDoListTableView.reloadData()
+    
         alert.addTextField { (inputNewContents) in
             inputNewContents.placeholder = "새로운 할 일 입력"
             inputNewContents.textAlignment = .center
@@ -88,6 +106,3 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         print("save")
     }
 }
-
-
-
