@@ -12,11 +12,12 @@ import SnapKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var data: [String] = []
+    var count: Int = 5
     
     private lazy var toDoListTableView = UITableView().then {
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
     }
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,15 +33,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         toDoListTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        
     }
     
     func nav() {
-        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self.data.count, action: data.count.append)
+        let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
         navigationItem.rightBarButtonItem = rightBarButtonItem
-        
-        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: nil)
+//
+        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButton))
         navigationItem.leftBarButtonItem = leftBarButtonItem
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -52,14 +56,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+    @objc func addButton() {
+        count += 1
+        print(count)
         
     }
-
+    
+    @objc func saveButton() {
+        print("save")
+    }
 }
-
-     
 
 
 
