@@ -51,6 +51,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donButtonTap))
     }
     
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+        }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete
+        {
+            data.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.endUpdates()
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return count
     }
@@ -95,12 +108,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     @objc func donButtonTap() {
-        self.navigationItem.leftBarButtonItem = doneButton
+        //self.navigationItem.leftBarButtonItem = doneButton
         toDoListTableView.setEditing(false, animated: true)
     }
     
     @objc func editButtonTap(_ sender: Any) {
-        self.navigationItem.leftBarButtonItem = editButton
+        //self.navigationItem.leftBarButtonItem = editButton
         toDoListTableView.setEditing(true, animated: true)
         print("edit")
     }
