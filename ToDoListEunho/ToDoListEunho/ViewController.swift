@@ -14,21 +14,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var data: [String] = []
     var count: Int = 0
     
-  
-    
-    
+
     private lazy var toDoListTableView = UITableView().then {
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
     }
      
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         toDoListTableView.reloadData()
         
         view.backgroundColor = .white
-        
-        nav()
         
         toDoListTableView.delegate = self
         toDoListTableView.dataSource = self
@@ -38,13 +35,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         toDoListTableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        nav()
+        
     }
     
     func nav() {
+        
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
         navigationItem.rightBarButtonItem = rightBarButtonItem
-        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButton))
+        
+        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTap))
         navigationItem.leftBarButtonItem = leftBarButtonItem
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donButtonTap))
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,7 +57,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-        cell.textLabel?.text = "to do list 제목"
+        cell.textLabel?.text = "What to do"
         cell.detailTextLabel?.text =  data[indexPath.row]
         cell.selectionStyle = .none
 
@@ -70,23 +74,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 var updatedToDoList = toDoList
                 updatedToDoList.append(newContents)
                 UserDefaults.standard.set(updatedToDoList, forKey: "toDoList")
+                self.data = updatedToDoList
+                self.count = updatedToDoList.count
             } else {
                 UserDefaults.standard.set([newContents], forKey: "toDoList")
+                self.data = [newContents]
+                self.count = 1
             }
             self.toDoListTableView.reloadData()
         })
-        
-        if let toDoList = UserDefaults.standard.stringArray(forKey: "toDoList") {
-            data = toDoList
-            count += 1
-           // print("UserDefaults에 저장된 할 일 목록: \(toDoList)")
-        } else {
-            data = ["X"]
-            count += 1
-           // print("UserDefaults에 저장된 할 일 목록이 없습니다.")
-        }
-        toDoListTableView.reloadData()
-    
+
         alert.addTextField { (inputNewContents) in
             inputNewContents.placeholder = "새로운 할 일 입력"
             inputNewContents.textAlignment = .center
@@ -94,15 +91,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         alert.addAction(cancle)
         alert.addAction(ok)
         present(alert,animated: true,completion: nil)
-        
-        toDoListTableView.reloadData()
-        
-    
-      
-        
     }
     
-    @objc func saveButton() {
-        print("save")
+    
+    @objc func donButtonTap() {
+        self.navigationItem.leftBarButtonItem = doneButton
+        toDoListTableView.setEditing(false, animated: true)
+    }
+    
+    @objc func editButtonTap(_ sender: Any) {
+        self.navigationItem.leftBarButtonItem = editButton
+        toDoListTableView.setEditing(true, animated: true)
+        print("edit")
     }
 }
+
