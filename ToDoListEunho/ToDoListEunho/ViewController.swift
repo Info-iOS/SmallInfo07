@@ -12,9 +12,8 @@ import SnapKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var data: [String] = []
-    var count: Int = 0
     
-
+    
     private lazy var toDoListTableView = UITableView().then {
         $0.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
     }
@@ -40,15 +39,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        toDoListTableView.reloadData()
+        let bringUserDefaults = UserDefaults.standard.stringArray(forKey: "toDoList")
+        self.data = bringUserDefaults!
+    }
+    
+    
     func nav() {
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
         navigationItem.rightBarButtonItem = rightBarButtonItem
         
-        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTap))
-        navigationItem.leftBarButtonItem = leftBarButtonItem
+//        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTap))
+//        navigationItem.leftBarButtonItem = leftBarButtonItem
         
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donButtonTap))
+//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donButtonTap))
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -58,14 +66,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete
         {
+            tableView.beginUpdates()
+            UserDefaults.standard.removeObject(forKey: "toDoList")
             data.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
+
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return count
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -88,11 +99,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 updatedToDoList.append(newContents)
                 UserDefaults.standard.set(updatedToDoList, forKey: "toDoList")
                 self.data = updatedToDoList
-                self.count = updatedToDoList.count
             } else {
                 UserDefaults.standard.set([newContents], forKey: "toDoList")
                 self.data = [newContents]
-                self.count = 1
             }
             self.toDoListTableView.reloadData()
         })
@@ -107,15 +116,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     
-    @objc func donButtonTap() {
-        //self.navigationItem.leftBarButtonItem = doneButton
-        toDoListTableView.setEditing(false, animated: true)
-    }
-    
-    @objc func editButtonTap(_ sender: Any) {
-        //self.navigationItem.leftBarButtonItem = editButton
-        toDoListTableView.setEditing(true, animated: true)
-        print("edit")
-    }
+//    @objc func donButtonTap() {
+//        //self.navigationItem.leftBarButtonItem = doneButton
+//        toDoListTableView.setEditing(false, animated: true)
+//    }
+//
+//    @objc func editButtonTap(_ sender: Any) {
+//        //self.navigationItem.leftBarButtonItem = editButton
+//        toDoListTableView.setEditing(true, animated: true)
+//        print("edit")
+//    }
 }
 
