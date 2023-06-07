@@ -44,7 +44,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         toDoListTableView.reloadData()
         let bringUserDefaults = UserDefaults.standard.stringArray(forKey: "toDoList")
-        self.data = bringUserDefaults!
+        self.data
     }
     
     
@@ -52,11 +52,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton))
         navigationItem.rightBarButtonItem = rightBarButtonItem
-        
-//        let leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonTap))
-//        navigationItem.leftBarButtonItem = leftBarButtonItem
-        
-//        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donButtonTap))
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
